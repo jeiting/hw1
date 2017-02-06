@@ -88,8 +88,8 @@ def make_session(num_cpu):
 
 ALREADY_INITIALIZED = set()
 def initialize():
-    new_variables = set(tf.all_variables()) - ALREADY_INITIALIZED
-    get_session().run(tf.initialize_variables(new_variables))
+    new_variables = set(tf.global_variables()) - ALREADY_INITIALIZED
+    tf.variables_initializer(new_variables)
     ALREADY_INITIALIZED.update(new_variables)
 
 
@@ -105,7 +105,7 @@ def load_state(fname):
     saver.restore(get_session(), fname)
 
 def save_state(fname):
-    os.makedirs(os.path.dirname(fname), exist_ok=True)
+    #os.makedirs(os.path.dirname(fname))
     saver = tf.train.Saver()
     saver.save(get_session(), fname)
 
